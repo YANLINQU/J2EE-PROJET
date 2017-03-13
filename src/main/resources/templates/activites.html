@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Friends of Mine</title>
+        <th:block th:include="fragments/headerinc :: head"></th:block>
+    </head>
+<body>
+    <th:block th:include="fragments/header :: header"></th:block>
+
+    <div th:fragment="activites">
+        <table class="w3-table w3-bordered">
+            <tr th:each="activite : ${activite}">
+                <td th:text="${activite.titre}"></td>
+                <td th:text="${activite.descriptif}"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

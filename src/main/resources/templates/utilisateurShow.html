@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Friends of Mine</title>
+    <th:block th:include="fragments/headerinc :: head"></th:block>
+</head>
+<body>
+    <th:block th:include="fragments/header :: header"></th:block>
+    <h2>Détail de l'utilisateur</h2>
+    <table class="w3-table w3-bordered">
+        <tr th:each="utilisateur : ${utilisateur}">
+            <div class="w3-cell-row">
+                <div class="w3-container w3-cell" style="width:20%">
+                    <p>Id :</p>
+                </div>
+                <div class="w3-container w3-cell">
+                    <p th:text="${utilisateur.id}"></p>
+                </div>
+            </div>
+            <div class="w3-cell-row">
+                <div class="w3-container w3-cell" style="width:20%">
+                    <p>Nom :</p>
+                </div>
+                <div class="w3-container w3-cell">
+                    <p th:text="${utilisateur.firstName}"></p>
+                </div>
+            </div>
+            <div class="w3-cell-row">
+                <div class="w3-container w3-cell" style="width:20%">
+                    <p>Prénom :</p>
+                </div>
+                <div class="w3-container w3-cell">
+                    <p th:text="${utilisateur.secondeName}">></p>
+                </div>
+            </div>
+            <div class="w3-cell-row">
+                <div class="w3-container w3-cell" style="width:20%">
+                    <p>Sexe :</p>
+                </div>
+                <div class="w3-container w3-cell">
+                    <p th:text="${utilisateur.sex}"></p>
+                </div>
+            </div>
+            <div class="w3-cell-row">
+                <div class="w3-container w3-cell" style="width:20%">
+                    <p>Email :</p>
+                </div>
+                <div class="w3-container w3-cell">
+                    <p th:text="${utilisateur.adresse}"></p>
+                </div>
+            </div>
+            <div class="w3-cell-row" >
+                <div class="w3-container w3-cell" style="width:40%">
+                    <p>Liste des activités avec responsabilité:</p>
+                </div>
+                <table class="w3-table w3-bordered">
+                    <tr >
+                        <td>titre</td>
+                        <td>descriptif</td>
+                    </tr>
+                    <div class="w3-container w3-cell" th:each="activites_utilisateur : ${activites_utilisateur}">
+                        <tr>
+                            <td><p th:text="${activites_utilisateur.titre}"></p></td>
+                            <td><p th:text="${activites_utilisateur.descriptif}"></p></td>
+                        </tr>
+                    </div>
+                </table>
+            </div>
+        </tr>
+    </table>
+</body>
+</html>
