@@ -1,14 +1,13 @@
 package friendsofmine.service;
 
 import friendsofmine.domain.Activite;
+import friendsofmine.domain.Inscription;
 import friendsofmine.domain.Utilisateur;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by QYL on 2017/2/27.
@@ -19,12 +18,16 @@ public class InitialisationService {
     private ActiviteService activiteService;
     @Autowired
     private UtilisateurService utilisateurService;
+    @Autowired
+    private InscriptionService inscriptionService;
 
-    Utilisateur thom,mary;
-    Activite Randonnee,Lindyhop,Taekwondo;
+    private Inscription maryOnTaekwondo, thomOnRandonnee, thomOnLindyhop;
+    private Utilisateur thom,mary;
+    private Activite Randonnee,Lindyhop,Taekwondo;
     public void initDonnees(){
         initUtilisateur();
         initActivite();
+        initInscription();
     }
 
     public void initActivite(){
@@ -42,6 +45,16 @@ public class InitialisationService {
         thom = new Utilisateur("thom", "yorke", "thom@yorke.fr", "M");
         utilisateurService.saveUtilisateur(mary);
         utilisateurService.saveUtilisateur(thom);
+    }
+
+    public void initInscription(){
+        maryOnTaekwondo = new Inscription(mary,Taekwondo, new Date());
+        thomOnRandonnee = new Inscription(thom,Randonnee,new Date());
+        thomOnLindyhop = new Inscription(thom,Lindyhop,new Date());
+
+        inscriptionService.saveInscription(maryOnTaekwondo);
+        inscriptionService.saveInscription(thomOnRandonnee);
+        inscriptionService.saveInscription(thomOnLindyhop);
     }
 
     public Utilisateur getThom() {
@@ -62,5 +75,15 @@ public class InitialisationService {
 
     public Activite getTaekwondo() {
         return Taekwondo;
+    }
+
+    public Inscription getMaryOnTaekwondo(){
+        return this.maryOnTaekwondo;
+    }
+    public Inscription getThomOnRandonnee(){
+        return this.thomOnRandonnee;
+    }
+    public Inscription getThomOnLindyhop(){
+        return this.thomOnLindyhop;
     }
 }

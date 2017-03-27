@@ -9,6 +9,10 @@
 
     <div th:fragment="activites">
         <table class="w3-table w3-bordered">
+            <tr>
+                <td>titre</td>
+                <td>descriptif</td>
+            </tr>
             <tr th:each="activite : ${activite}">
                 <td th:text="${activite.titre}"></td>
                 <td th:text="${activite.descriptif}"></td>

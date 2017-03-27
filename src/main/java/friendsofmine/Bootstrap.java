@@ -37,11 +37,11 @@ public class Bootstrap {
     }
 
     public ArrayList<Activite> getAllActivite(){
-        return this.activiteService.findAllActivite();
+        return this.activiteService.findAllActivites();
     }
 
     public ArrayList<Utilisateur> getAllUtilisateur(){
-        return this.utilisateurServices.findAllUtilisateur();
+        return this.utilisateurServices.findAllUtilisateurs();
     }
 
     public UtilisateurService getUtilisateurServices(){

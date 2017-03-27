@@ -1,6 +1,5 @@
 package friendsofmine.controllers;
 
-import friendsofmine.Bootstrap;
 import friendsofmine.domain.Utilisateur;
 import friendsofmine.service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,82 +9,86 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
-/**
- * Created by QYL on 2017/2/27.
- */
 @Controller
 public class UtilisateurController {
-    @Autowired
-    private Bootstrap bootstrap;
+
     @Autowired
     private UtilisateurService utilisateurService;
 
-    @RequestMapping(value = "/utilisateurs", method = RequestMethod.GET)
-    public String index(Model model){
-        //model.addAttribute("utilisateurs",this.bootstrap.getAllActivite());
-        model.addAttribute("utilisateurs",this.bootstrap.getAllUtilisateur());
+    @GetMapping(value = "/utilisateurs")
+    public String list(Model model) {
+        model.addAttribute("utilisateurs", utilisateurService.findAllUtilisateurs());
         return "utilisateurs";
     }
 
-    @RequestMapping("/utilisateur/{id}")
-    public String utilisateursId(@PathVariable Long id, Model model){
-        int len=this.bootstrap.getAllUtilisateur().size();
-        if(len >= id){
-            Utilisateur util=this.bootstrap.getUtilisateurServices().findOneUtilisateur(id);
-            model.addAttribute("utilisateur",util);
-            model.addAttribute("activites_utilisateur",util.getActivites());
-            return "utilisateurShow";
-        }else{
+    @GetMapping("utilisateur/{id}")
+    public String showUtilisateur(@PathVariable Long id, Model model){
+        Utilisateur util = utilisateurService.findOneUtilisateur(id);
+        if (util == null) {
+            model.addAttribute("customMessage", "Impossible. Id non valide");
             return "error";
         }
+        model.addAttribute("utilisateur", util);
+        return "utilisateurShow";
     }
 
     @RequestMapping("/utilisateur/new")
-    public String utilisateursNewPage(Model model){
+    public String createUtilisateur(Model model){
         model.addAttribute("utilisateur", new Utilisateur());
         return "utilisateurForm";
     }
 
-    @RequestMapping("/utilisateur")
-    public String utilisateurCreate(@Valid Long id,@Valid String firstName,@Valid String secondeName,@Valid String adresse,@Valid String sex){
-        Utilisateur util;
-        System.out.println("++++"+id+"+++++");
-        int idd=1;
-        try{
-            id.equals("");
-        }catch (Exception e){
-            idd=0;
+    @PostMapping(value = "/utilisateur")
+    public String createOrUpdateUtilisateur(@Valid Utilisateur util,
+                                            BindingResult bindingResult){
+        if (bindingResult.hasErrors()) {
+            return "utilisateurForm";
         }
-        if(idd==0){
-            util = new Utilisateur(firstName,secondeName,adresse,sex);
-            this.utilisateurService.saveUtilisateur(util);
-        }else{
-            System.out.println(firstName);
-            util = this.utilisateurService.findOneUtilisateur(id);
-            util.setFirstName(firstName);
-            util.setSecondeName(secondeName);
-            util.setAdresse(adresse);
-            util.setSex(sex);
-            this.utilisateurService.saveUtilisateur(util);
-        }
+        utilisateurService.saveUtilisateur(util);
         return "redirect:/utilisateur/" + util.getId();
     }
 
-    @RequestMapping("/utilisateur/edit/{id}")
-    public String utilisateurEdit(@PathVariable Long id,Model model){
-        Utilisateur util = this.utilisateurService.findOneUtilisateur(id);
+    @GetMapping("utilisateur/edit/{id}")
+    public String editUtilisateur(@PathVariable Long id, Model model){
+        Utilisateur util = utilisateurService.findOneUtilisateur(id);
+        if (util == null) {
+            model.addAttribute("customMessage", "Impossible. Id non valide");
+            return "error";
+        }
         model.addAttribute("utilisateur", util);
         return "utilisateurForm";
     }
-    /*
-    @RequestMapping("/utilisateur/delete/{id}")
-    public String utilisateurDele(@PathVariable Long id,Model model){
-        Utilisateur util = this.utilisateurService.findOneUtilisateur(id);
-        util.delActivites();
-        this.utilisateurService.saveUtilisateur(util);
-        this.utilisateurService.delUtilisateur(id);
+
+    @DeleteMapping("utilisateur/delete/{id}")
+    public String deleteUtilisateur(@PathVariable Long id, Model model){
+        Utilisateur util = utilisateurService.findOneUtilisateur(id);
+        if (util == null) {
+            model.addAttribute("customMessage", "Impossible. Id non valide");
+            return "error";
+        }
+        if (util.getActivites().size() != 0) {
+            model.addAttribute("customMessage", "Impossible. L'utilisateur est responsable d'activités. \n " +
+                    "Un nouveau responsable doit être désigné avant de supprimer " +
+                    util.getPrenom() + " " + util.getNom() + ".");
+            return "error";
+        }
+        utilisateurService.delUtilisateur(id);
         return "redirect:/utilisateurs";
     }
-    */
+
+    @GetMapping("utilisateur/search")
+    public String searchUtilisateurs(@RequestParam(value = "sexe",required = true)String sexe, Model model) {
+        List<Utilisateur> util;
+        if (sexe.equals("M"))
+            util = utilisateurService.findUtilisateursM();
+        else if (sexe.equals("F"))
+            util = utilisateurService.findUtilisateursF();
+        else
+            util = utilisateurService.findAllUtilisateurs();
+        model.addAttribute("utilisateurs", util);
+        return "utilisateurs";
+    }
+
 }

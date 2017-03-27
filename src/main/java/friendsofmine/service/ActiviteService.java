@@ -58,7 +58,7 @@ public class ActiviteService{
         return  activiteRepository;
     }
 
-    public ArrayList<Activite> findAllActivite(){
+    public ArrayList<Activite> findAllActivites(){
         ArrayList<Activite> listActivite=new ArrayList<Activite>();
         for(Iterator itr = activiteRepository.findAll().iterator(); itr.hasNext();){
             listActivite.add((Activite) itr.next());

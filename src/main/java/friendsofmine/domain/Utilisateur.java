@@ -14,26 +14,26 @@ import java.util.Set;
  * Created by QYL on 2017/2/27.
  */
 @Entity
-public class Utilisateur implements Serializable {
+public class Utilisateur {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
     @NotNull
     @Size(min=1, max=16)
-    public String firstName;
+    public String nom;
     @NotNull
     @Size(min=1, max=16)
-    public String secondeName;
+    public String prenom;
     @NotNull
     @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
             +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
             +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
             message="{invalid.adresse}")
     @Size(min=1, max=30)
-    public String adresse;
+    public String email;
     @NotNull
     @Pattern(regexp="M|F")
-    public String sex;
+    public String sexe;
 
     public Date date;
 
@@ -41,20 +41,28 @@ public class Utilisateur implements Serializable {
     public Set<Activite> activites = new HashSet<Activite>();
     public void addActivite(Activite a) {activites.add(a) ;}
     public Set<Activite> getActivites() {return activites;}
+    public void setActivites(Set<Activite> activites) {
+        this.activites = activites;
+    }
 
-    public Utilisateur(String firstName,String secondeName,String adresse,String sex){
-        this.firstName = firstName;
-        this.secondeName = secondeName;
-        this.adresse = adresse;
-        this.sex = sex;
+    @OneToMany(mappedBy = "utilisateur_ins")
+    private Set<Inscription> inscriptions = new HashSet <Inscription >();
+    public Set<Inscription> getInscriptions() { return this.inscriptions; }
+    public void setInscriptions(Set<Inscription> inscriptions) { this.inscriptions = inscriptions; }
+
+    public Utilisateur(String nom,String prenom,String email,String sexe){
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.sexe = sexe;
         this.date = new Date();
     }
 
-    public Utilisateur(String firstName,String secondeName,String adresse,String sex,Date date){
-        this.firstName = firstName;
-        this.secondeName = secondeName;
-        this.adresse = adresse;
-        this.sex = sex;
+    public Utilisateur(String nom,String prenom,String email,String sexe,Date date){
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.sexe = sexe;
         this.date = date;
     }
 
@@ -70,36 +78,36 @@ public class Utilisateur implements Serializable {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getNom() {
+        return nom;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
-    public String getSecondeName() {
-        return secondeName;
+    public String getPrenom() {
+        return prenom;
     }
 
-    public void setSecondeName(String secondeName) {
-        this.secondeName = secondeName;
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
     }
 
-    public String getAdresse() {
-        return adresse;
+    public String getEmail() {
+        return email;
     }
 
-    public void setAdresse(String adresse) {
-        this.adresse = adresse;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getSex() {
-        return sex;
+    public String getSexe() {
+        return sexe;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setSexe(String sexe) {
+        this.sexe = sexe;
     }
 
     public Date getDate() {
@@ -110,11 +118,42 @@ public class Utilisateur implements Serializable {
         this.date = date;
     }
 
-    public void setActivites(Set<Activite> activites) {
-        this.activites = activites;
-    }
-
     public void delActivites(){
         this.activites.clear();
+    }
+
+    @Override
+    public String toString() {
+        return "Utilisateur{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", prenom='" + prenom + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Utilisateur that = (Utilisateur) o;
+
+        if (nom != null ? !nom.equals(that.nom) : that.nom != null) return false;
+        if (prenom != null ? !prenom.equals(that.prenom) : that.prenom != null) return false;
+        if (email != null ? !email.equals(that.email) : that.email != null) return false;
+        if (date != null ? !date.equals(that.date) : that.date != null)
+            return false;
+        return sexe != null ? sexe.equals(that.sexe) : that.sexe == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = nom != null ? nom.hashCode() : 0;
+        result = 31 * result + (prenom != null ? prenom.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (sexe != null ? sexe.hashCode() : 0);
+        return result;
     }
 }

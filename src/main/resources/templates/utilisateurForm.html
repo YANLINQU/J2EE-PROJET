@@ -11,24 +11,24 @@
     <input type="hidden" th:field="*{id}"/>
     <p>
         <label>Nom :</label><p class="w3-large w3-text-red">size must be between 1 and 16</p>
-        <input name="firstname" class="w3-input" type="text" style="width:50%" th:field="*{firstName}"/>
+        <input name="firstname" class="w3-input" type="text" style="width:50%" th:field="*{nom}"/>
     </p>
 
     <p>
         <label>Prénom : </label><p class="w3-large w3-text-red">size must be between 1 and</p>
-        <input name="secondename" class="w3-input" type="text" style="width:50%" th:field="*{secondeName}"/>
+        <input name="secondename" class="w3-input" type="text" style="width:50%" th:field="*{prenom}"/>
     </p>
 
     <p>
         <label>Sexe :</label>
-        <input name="sex" class="w3-radio" type="radio" value="M"  th:field="*{sex}" checked="true"/>
+        <input name="sex" class="w3-radio" type="radio" value="M"  th:field="*{sexe}" checked="true"/>
         <label class="w3-validate">M</label>
 
-        <input name="sex" class="w3-radio" type="radio" value="F" th:field="*{sex}"/>
+        <input name="sex" class="w3-radio" type="radio" value="F" th:field="*{sexe}"/>
         <label class="w3-validate">F</label></p>
     <p>
         <label>Email :</label><p class="w3-large w3-text-red">not a well-formed email address</p>
-        <input name="adresse" class="w3-input" type="text" style="width:50%" th:field="*{adresse}"/></p>
+        <input name="adresse" class="w3-input" type="text" style="width:50%" th:field="*{email}"/></p>
 
     <button class="w3-button" onclick="verifier()">Envoyer</button>
 </form>

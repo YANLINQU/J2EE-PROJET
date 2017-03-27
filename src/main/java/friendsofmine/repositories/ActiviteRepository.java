@@ -1,6 +1,7 @@
 package friendsofmine.repositories;
 
 import friendsofmine.domain.Activite;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**

@@ -54,23 +54,23 @@ public class UtilisateurServiceTest {
     public void testUtilisateurRecupereeInchangee() {
         Utilisateur fetched = utilisateurService.findOneUtilisateur(util1.getId());
         assertEquals(fetched.getId(), util1.getId());
-        assertEquals(fetched.getAdresse(), util1.getAdresse());
+        assertEquals(fetched.getEmail(), util1.getEmail());
     }
 
     @Test
     public void testUtilisateurMiseAJour() {
         Utilisateur fetched = utilisateurService.findOneUtilisateur(util1.getId());
-        fetched.setAdresse("tutu@tutu.fr");
+        fetched.setEmail("tutu@tutu.fr");
         utilisateurService.saveUtilisateur(fetched);
         Utilisateur fetchedUpdated = utilisateurService.findOneUtilisateur(fetched.getId());
-        assertEquals(fetched.getAdresse(), fetchedUpdated.getAdresse());
+        assertEquals(fetched.getEmail(), fetchedUpdated.getEmail());
     }
 
     @Test
     public void testNombreDUtilisateurPersisteeApresMiseAJour() {
         long count = utilisateurService.countUtilisateur();
         Utilisateur fetched = utilisateurService.findOneUtilisateur(util1.getId());
-        fetched.setAdresse("titi@titi.fr");
+        fetched.setEmail("titi@titi.fr");
         utilisateurService.saveUtilisateur(fetched);
         assertEquals(count,utilisateurService.countUtilisateur());
     }
